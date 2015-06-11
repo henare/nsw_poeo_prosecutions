@@ -36,19 +36,23 @@ def save_details_from_search_results(page)
 
     element_id = 3
     number_of_prosecutions.times do |n|
-      prosecution_record = {
-        id:            "#{record_id}-#{n + 1}",
-        case_id:       record_id,
-        court_number:  detail_page.at("#dgProsecution_ctl0#{element_id}_lblgrCourtNo").inner_text.strip,
-        abn:           detail_page.at("#dgProsecution_ctl0#{element_id}_lblgrABN").inner_text.strip,
-        act:           detail_page.at("#dgProsecution_ctl0#{element_id}_lblgrAct").inner_text.strip,
-        section:       detail_page.at("#dgProsecution_ctl0#{element_id}_lblgrSection").inner_text.strip,
-        description:   detail_page.at("#dgProsecution_ctl0#{element_id}_lblDescription").inner_text.strip,
-        amount:        detail_page.at("#dgProsecution_ctl0#{element_id}_lblgrAmount").inner_text.strip,
-        other_penalty: detail_page.at("#dgProsecution_ctl0#{element_id}_lblgrOther").inner_text.strip
-      }
-
-      ScraperWiki::save_sqlite [:id], prosecution_record, 'prosecutions'
+      begin
+        prosecution_record = {
+          id:            "#{record_id}-#{n + 1}",
+          case_id:       record_id,
+          court_number:  detail_page.at("#dgProsecution_ctl0#{element_id}_lblgrCourtNo").inner_text.strip,
+          abn:           detail_page.at("#dgProsecution_ctl0#{element_id}_lblgrABN").inner_text.strip,
+          act:           detail_page.at("#dgProsecution_ctl0#{element_id}_lblgrAct").inner_text.strip,
+          section:       detail_page.at("#dgProsecution_ctl0#{element_id}_lblgrSection").inner_text.strip,
+          description:   detail_page.at("#dgProsecution_ctl0#{element_id}_lblDescription").inner_text.strip,
+          amount:        detail_page.at("#dgProsecution_ctl0#{element_id}_lblgrAmount").inner_text.strip,
+          other_penalty: detail_page.at("#dgProsecution_ctl0#{element_id}_lblgrOther").inner_text.strip
+        }
+  
+        ScraperWiki::save_sqlite [:id], prosecution_record, 'prosecutions'
+      rescue NoMethodError => e
+        puts "Error saving prosecution #{n + 1} for #{record_id}: #{e}"
+      end
 
       element_id += 1
     end
