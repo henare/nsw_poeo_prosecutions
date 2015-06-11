@@ -31,6 +31,8 @@ def save_details_from_search_results(page)
     }
 
     ScraperWiki::save_sqlite [:id], case_record, 'cases'
+    
+    puts "Saved case, now saving prosecutions for defendant: #{defendant}"
 
     element_id = 3
     number_of_prosecutions.times do |n|
