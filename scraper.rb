@@ -56,7 +56,7 @@ end
 agent = Mechanize.new
 agent.keep_alive = false # HACK: to avoid a "Net::HTTP::Persistent::Error:too many connection resets" condition
                      # https://github.com/tenderlove/mechanize/issues/123#issuecomment-6432074
-url = 'http://www.environment.nsw.gov.au/casesapp/Searchresultprosecution.aspx'
+url = "http://www.epa.nsw.gov.au/casesapp/searchcases.aspx"
 
 page = agent.get url
 form = page.form_with(name: 'frmSearchScreen')
